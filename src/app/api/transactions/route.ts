@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
     const body = await req.json();
 
-    // Basic validation
+    // Validation → still 200
     if (!body?.type || !body?.category || !body?.amount || !body?.date) {
       return NextResponse.json(
         {
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
           message: "Missing required fields",
           data: null,
         },
-        { status: 400 } // Bad Request
+        { status: 200 }
       );
     }
 
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
         message: "Transaction created successfully",
         data: transaction,
       },
-      { status: 201 } // Created
+      { status: 200 }
     );
   } catch (error: any) {
     console.error("POST /transactions error:", error);
@@ -45,10 +45,10 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         success: false,
-        message: "Internal server error",
+        message: "Unable to create transaction",
         data: null,
       },
-      { status: 500 }
+      { status: 200 }
     );
   }
 }
@@ -64,9 +64,9 @@ export async function GET() {
       {
         success: true,
         message: "Transactions fetched successfully",
-        data: transactions ?? [], // 👈 always array
+        data: transactions ?? [], // always array
       },
-      { status: 200 } // OK
+      { status: 200 }
     );
   } catch (error: any) {
     console.error("GET /transactions error:", error);
@@ -74,10 +74,10 @@ export async function GET() {
     return NextResponse.json(
       {
         success: false,
-        message: "Failed to fetch transactions",
-        data: [], // 👈 never null for app safety
+        message: "Unable to fetch transactions",
+        data: [], // never null
       },
-      { status: 500 }
+      { status: 200 }
     );
   }
 }
